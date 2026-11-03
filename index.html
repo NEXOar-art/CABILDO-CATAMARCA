@@ -10,10 +10,11 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@500;600;700&display=swap" rel="stylesheet">
   <style>
-    :root{--ink:#1b271e;--cream:#f2eee5;--paper:#faf8f2;--rust:#a8432f;--gold:#c4a675;--muted:#8d8b80;--serif:'Playfair Display',Georgia,serif;--sans:'DM Sans',Arial,sans-serif}
+    :root{--ink:#1b271e;--cream:#f2eee5;--paper:#faf8f2;--rust:#a8432f;--gold:#c4a675;--muted:#8d8b80;--wa:#1da851;--serif:'Playfair Display',Georgia,serif;--sans:'DM Sans',Arial,sans-serif}
     *{box-sizing:border-box;margin:0;padding:0}
     html{scroll-behavior:smooth}
     body{background:var(--paper);color:var(--ink);font-family:var(--sans);-webkit-font-smoothing:antialiased;overflow-x:hidden}
+    body.locked{overflow:hidden}
     a{color:inherit;text-decoration:none}
 
     .announcement{height:34px;background:#25352a;color:#e9e4d9;display:flex;align-items:center;justify-content:center;gap:9px;font-size:10px;letter-spacing:.08em}
@@ -30,32 +31,59 @@
     .main-nav{display:flex;align-items:center;gap:35px;font-size:11px;color:#54564e}
     .main-nav>a:not(.nav-cta){transition:color .3s}
     .main-nav>a:not(.nav-cta):hover{color:var(--rust)}
-    .nav-cta{background:var(--rust);padding:14px 19px;color:#fff;font-weight:600;letter-spacing:.02em;transition:transform .2s,background .2s}
+    .nav-cta{background:var(--rust);padding:14px 19px;color:#fff;font-weight:600;letter-spacing:.02em;font-family:var(--sans);font-size:11px;border:0;cursor:pointer;transition:transform .2s,background .2s}
     .nav-cta:hover{transform:translateY(-2px);background:#8f3826}
     .nav-cta span,.button span{margin-left:12px}
     .menu-toggle{display:none;cursor:pointer}
 
-    .hero{min-height:100vh;position:relative;color:#fff;background:#252820;overflow:hidden;display:flex;flex-direction:column}
-    .hero-image{position:absolute;inset:0;background-image:url('mostradorcabildo.jpg');background-size:cover;background-position:center;width:100%;height:100%;transform:scale(1.02);will-change:transform}
-    .hero-shade{position:absolute;inset:0;background:linear-gradient(90deg,rgba(14,20,16,.79) 0%,rgba(17,21,17,.54) 41%,rgba(20,20,16,.08) 100%),linear-gradient(0deg,rgba(12,16,13,.5) 0%,transparent 40%)}
-    .hero-content{position:relative;z-index:2;left:11.8%;top:50%;transform:translateY(-50%);max-width:600px;padding:0 20px}
+    .hero{min-height:100vh;position:relative;color:#fff;background:linear-gradient(120deg,#1c241d,#2a2419 55%,#151a14);overflow:hidden;display:flex;flex-direction:column}
+    .hero-image{position:absolute;inset:-4%;background-image:url('mostradorcabildo.jpg');background-size:cover;background-position:center;transform:scale(1.06);will-change:transform}
+    .hero-shade{position:absolute;inset:0;background:linear-gradient(90deg,rgba(14,20,16,.79) 0%,rgba(17,21,17,.54) 41%,rgba(20,20,16,.08) 100%),linear-gradient(0deg,rgba(12,16,13,.72) 0%,rgba(12,16,13,.28) 38%,transparent 62%)}
+
+    /* ===== HERO: texto y botones abajo, con movimiento ===== */
+    .hero-content{position:absolute;left:11.8%;right:6%;bottom:104px;max-width:620px;z-index:3;will-change:transform,opacity}
+    .hero-content>*{opacity:0;animation:heroRise 1.05s cubic-bezier(.22,.8,.22,1) forwards}
+    .hero-content>*:nth-child(1){animation-delay:.35s}
+    .hero-content>*:nth-child(2){animation-delay:.5s}
+    .hero-content>*:nth-child(3){animation-delay:.72s}
+    .hero-content>*:nth-child(4){animation-delay:.86s}
+    .hero-content>*:nth-child(5){animation-delay:1s}
+    @keyframes heroRise{from{opacity:0;transform:translate3d(0,52px,0);filter:blur(7px)}to{opacity:1;transform:translate3d(0,0,0);filter:blur(0)}}
+
     .eyebrow{font-size:9px;letter-spacing:.22em;font-weight:600;color:#e4d8bd;margin:0 0 24px}
     .eyebrow span{margin-right:9px;vertical-align:middle}
     .hero h1,.intro h2,.section-heading h2,.visit h2{font:500 clamp(52px,6.3vw,86px)/1.04 var(--serif);letter-spacing:-.045em;margin:0}
     .hero h1 em,.intro h2 em,.section-heading h2 em,.visit h2 em{font-weight:500;color:#c6a674}
-    .hero-copy{font-size:14px;line-height:1.8;color:#eee8dd;max-width:390px;margin:23px 0 29px}
+    .hero-copy{font-size:14px;line-height:1.8;color:#eee8dd;max-width:420px;margin:23px 0 29px}
     .hero-meta{font-size:9px;letter-spacing:.06em;color:#e3d9c8;margin:-12px 0 21px}
     .hero-meta span{color:#c6a674;margin:0 7px}
-    .hero-actions{display:flex;align-items:center;gap:27px}
-    .button{display:inline-flex;align-items:center;justify-content:center;padding:16px 21px;font-size:10px;font-weight:600;letter-spacing:.04em;transition:transform .2s,background .2s;cursor:pointer}
+    .hero-actions{display:flex;align-items:center;gap:27px;flex-wrap:wrap}
+
+    .button{display:inline-flex;align-items:center;justify-content:center;padding:16px 21px;font-size:10px;font-weight:600;letter-spacing:.04em;transition:transform .2s,background .2s;cursor:pointer;border:0;font-family:var(--sans)}
     .button:hover{transform:translateY(-2px)}
     .button-light{background:#f3eee4;color:#1d271e}
     .text-link{font-size:10px;color:#f4eee3;transition:opacity .3s}
     .text-link:hover{opacity:.7}
     .text-link span{margin-left:7px}
-    .hero-stamp{position:absolute;right:8%;top:25%;width:104px;height:104px;border:1px solid rgba(234,217,180,.7);border-radius:50%;display:flex;align-items:center;justify-content:center;flex-direction:column;transform:rotate(10deg);color:#f0e4cd;font-size:8px;letter-spacing:.14em;z-index:2}
+
+    /* ===== Botón "Reservá tu mesa": brillo, pulso y elevación ===== */
+    .btn-reserva{position:relative;overflow:isolation;background:#f3eee4;color:#1d271e;padding:18px 26px;box-shadow:0 8px 24px rgba(0,0,0,.28);transition:transform .35s cubic-bezier(.22,.8,.22,1),box-shadow .35s,background .35s,color .35s}
+    .btn-reserva:before{content:"";position:absolute;inset:0;z-index:1;background:linear-gradient(105deg,transparent 25%,rgba(255,255,255,.85) 50%,transparent 75%);transform:translateX(-120%) skewX(-18deg);animation:btnShine 3.8s ease-in-out infinite}
+    @keyframes btnShine{0%{transform:translateX(-120%) skewX(-18deg)}55%{transform:translateX(130%) skewX(-18deg)}100%{transform:translateX(130%) skewX(-18deg)}}
+    .btn-reserva:after{content:"";position:absolute;inset:-2px;z-index:0;border:1px solid rgba(243,238,228,.55);opacity:0;animation:btnPulse 2.8s ease-out infinite}
+    @keyframes btnPulse{0%{opacity:.7;transform:scale(1)}70%{opacity:0;transform:scale(1.14)}100%{opacity:0;transform:scale(1.14)}}
+    .btn-reserva>span,.btn-reserva>b{position:relative;z-index:2}
+    .btn-reserva:hover{transform:translateY(-4px);box-shadow:0 16px 34px rgba(0,0,0,.38);background:#fff}
+    .btn-reserva:active{transform:translateY(-1px) scale(.985)}
+    .btn-reserva .arrow-float{display:inline-block;transition:transform .35s}
+    .btn-reserva:hover .arrow-float{transform:translate(3px,-3px)}
+
+    .hero-stamp{position:absolute;right:8%;top:22%;width:104px;height:104px;border:1px solid rgba(234,217,180,.7);border-radius:50%;display:flex;align-items:center;justify-content:center;flex-direction:column;transform:rotate(10deg);color:#f0e4cd;font-size:8px;letter-spacing:.14em;z-index:2;animation:stampFloat 7s ease-in-out infinite}
+    @keyframes stampFloat{0%,100%{transform:rotate(10deg) translateY(0)}50%{transform:rotate(6deg) translateY(-12px)}}
     .hero-stamp b{font:italic 16px var(--serif);letter-spacing:0;margin:3px 0}
-    .hero-bottom{position:absolute;left:7.4%;right:7.4%;bottom:25px;display:flex;justify-content:space-between;font-size:8px;letter-spacing:.17em;color:#e5dfd4;z-index:2}
+    .hero-bottom{position:absolute;left:7.4%;right:7.4%;bottom:25px;display:flex;justify-content:space-between;font-size:8px;letter-spacing:.17em;color:#e5dfd4;z-index:2;opacity:0;animation:heroRise 1s ease .9s forwards}
+    .hero-bottom span:last-child{animation:scrollHint 2.2s ease-in-out infinite}
+    @keyframes scrollHint{0%,100%{transform:translateY(0);opacity:.7}50%{transform:translateY(5px);opacity:1}}
 
     .section-pad{padding:110px 12%}
     .intro{display:grid;grid-template-columns:1fr 1.6fr 1.35fr;gap:35px;align-items:start}
@@ -65,7 +93,7 @@
     .intro-copy h2,.visit h2{font-size:clamp(43px,5vw,66px)}
     .intro-copy h2 em,.visit h2 em{color:var(--rust)}
     .intro-copy p,.visit-copy>p:not(.eyebrow){font-size:12px;line-height:1.9;color:#6f7068;max-width:390px;margin:20px 0}
-    .under-link{font-size:10px;font-weight:600;border-bottom:1px solid #bba982;padding-bottom:8px;display:inline-block;margin-top:8px;transition:border-color .3s,color .3s}
+    .under-link{font-size:10px;font-weight:600;border-bottom:1px solid #bba982;padding-bottom:8px;display:inline-block;margin-top:8px;transition:border-color .3s,color .3s;background:none;border-top:0;border-left:0;border-right:0;cursor:pointer;font-family:var(--sans)}
     .under-link:hover{border-color:var(--rust);color:var(--rust)}
     .under-link span{margin-left:12px;color:var(--rust)}
     .intro-image{position:relative;margin-top:38px;overflow:hidden}
@@ -109,7 +137,7 @@
     .contact-list small{font-size:8px;letter-spacing:.15em;color:#969184;margin-bottom:4px}
     .contact-list b,.contact-list a{font-size:10px;font-weight:500}
     .contact-list b{max-width:280px;line-height:1.5}
-    .visit-actions{display:flex;align-items:center;gap:22px;margin-top:25px}
+    .visit-actions{display:flex;align-items:center;gap:22px;margin-top:25px;flex-wrap:wrap}
     .button-dark{background:var(--ink);color:#fff}
     .map-wrap{position:relative;height:480px;background:#ddd;overflow:hidden}
     .map-wrap iframe{border:0;width:100%;height:100%;filter:grayscale(.75) sepia(.15);transition:filter .5s}
@@ -122,20 +150,66 @@
     .map-link small{font-size:9px;color:#858276;margin-top:4px}
     .map-arrow{margin-left:auto;color:var(--rust)}
 
+    /* ===== FOOTER con toda la información de contacto ===== */
     .site-footer{background:#17221a;color:#f3eee5;padding:36px 7.4% 20px}
     .footer-top{display:flex;align-items:center;justify-content:space-between}
     .brand-footer .brand-mark{color:#d1b17d}
     .brand-footer b{color:#f3eee5}
     .brand-footer small{color:#aaa496}
     .footer-top>p{font:italic 15px var(--serif);color:#c9c2b5}
-    .footer-book{font-size:10px;border-bottom:1px solid #a48a60;padding-bottom:8px;transition:color .3s}
+    .footer-book{font-size:10px;border-bottom:1px solid #a48a60;padding-bottom:8px;transition:color .3s;background:none;border-top:0;border-left:0;border-right:0;color:inherit;cursor:pointer;font-family:var(--sans);letter-spacing:.05em}
     .footer-book:hover{color:#d1b17d}
+
+    .footer-contact{display:grid;grid-template-columns:repeat(4,1fr);gap:26px;margin-top:34px;padding-top:30px;border-top:1px solid #ffffff1c}
+    .fc-item{display:flex;gap:12px;align-items:flex-start}
+    .fc-icon{width:34px;height:34px;flex:0 0 34px;border:1px solid #ffffff2e;border-radius:50%;display:grid;place-items:center;color:#d1b17d;font-size:15px}
+    .fc-item small{display:block;font-size:8px;letter-spacing:.16em;color:#9fa79d;margin-bottom:6px}
+    .fc-item b{display:block;font-size:11px;font-weight:600;line-height:1.5;color:#f3eee5}
+    .fc-item em{display:block;font-style:normal;font-size:10px;line-height:1.6;color:#b6bcb4;margin-top:4px}
+    .fc-item a{transition:color .3s}
+    .fc-item a:hover{color:#e6cd9d}
+    .fc-tag{display:inline-block;margin-top:8px;font-size:8px;letter-spacing:.14em;color:#d1b17d;border:1px solid #ffffff26;padding:4px 8px}
+
     .footer-line{height:1px;background:#ffffff24;margin:28px 0 17px}
-    .footer-bottom{display:flex;align-items:center;justify-content:space-between;font-size:9px;color:#b8b5aa}
-    .footer-bottom div{display:flex;gap:9px}
+    .footer-bottom{display:flex;align-items:center;justify-content:space-between;font-size:9px;color:#b8b5aa;gap:14px;flex-wrap:wrap}
+    .footer-bottom div{display:flex;gap:9px;flex-wrap:wrap}
     .footer-bottom a:hover{color:#fff}
 
-    /* Scroll Reveal Animations */
+    /* ===== MODAL DE RESERVA ===== */
+    .modal-overlay{position:fixed;inset:0;z-index:1000;display:flex;align-items:center;justify-content:center;padding:22px;background:rgba(10,16,12,.74);backdrop-filter:blur(9px);-webkit-backdrop-filter:blur(9px);opacity:0;visibility:hidden;transition:opacity .35s ease,visibility .35s ease}
+    .modal-overlay.open{opacity:1;visibility:visible}
+    .modal-card{width:min(600px,100%);max-height:92vh;overflow-y:auto;background:var(--paper);border-top:3px solid var(--rust);box-shadow:0 40px 90px rgba(0,0,0,.5);transform:translateY(34px) scale(.97);opacity:0;transition:transform .5s cubic-bezier(.22,.8,.22,1),opacity .4s}
+    .modal-overlay.open .modal-card{transform:none;opacity:1}
+    .modal-head{display:flex;justify-content:space-between;align-items:flex-start;gap:18px;padding:34px 38px 20px;background:linear-gradient(180deg,#f4efe5,#faf8f2)}
+    .modal-head h3{font:500 clamp(28px,3.4vw,38px)/1.1 var(--serif);letter-spacing:-.03em;margin:8px 0 8px}
+    .modal-head h3 em{color:var(--rust);font-style:italic}
+    .modal-head p{font-size:11px;line-height:1.7;color:#7b7c74;max-width:380px}
+    .modal-close{width:38px;height:38px;flex:0 0 38px;border:1px solid #d8d0c1;background:#fff;color:var(--ink);font-size:20px;line-height:1;cursor:pointer;display:grid;place-items:center;transition:all .3s}
+    .modal-close:hover{background:var(--ink);color:#fff;border-color:var(--ink);transform:rotate(90deg)}
+    .modal-form{padding:8px 38px 34px}
+    .fields-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+    .field{display:flex;flex-direction:column}
+    .field.full{grid-column:1/-1}
+    .field label{font-size:8px;letter-spacing:.16em;color:#969184;font-weight:700;margin-bottom:8px}
+    .field label i{font-style:normal;color:#b9b3a5;text-transform:none;letter-spacing:.04em}
+    .field input,.field select{width:100%;padding:14px;border:1px solid #d8d0c1;background:#fff;font:400 12px var(--sans);color:var(--ink);border-radius:0;appearance:none;-webkit-appearance:none;transition:border-color .3s,box-shadow .3s}
+    .field select{background-image:linear-gradient(45deg,transparent 50%,#8d8b80 50%),linear-gradient(135deg,#8d8b80 50%,transparent 50%);background-position:calc(100% - 18px) 20px,calc(100% - 13px) 20px;background-size:5px 5px,5px 5px;background-repeat:no-repeat;padding-right:36px}
+    .field input:focus,.field select:focus{outline:none;border-color:var(--rust);box-shadow:0 0 0 3px rgba(168,67,47,.13)}
+    .field.invalid input,.field.invalid select{border-color:#b3261e;box-shadow:0 0 0 3px rgba(179,38,30,.1)}
+    .err{font-size:9px;color:#b3261e;margin-top:6px;min-height:11px;letter-spacing:.02em}
+    .modal-note{font-size:9px;line-height:1.7;color:#969184;margin:6px 0 18px;border-left:2px solid #d8d0c1;padding-left:11px}
+    .btn-wa{width:100%;background:var(--wa);color:#fff;padding:18px;font-size:11px;font-weight:700;letter-spacing:.06em;display:flex;align-items:center;justify-content:center;gap:11px;border:0;cursor:pointer;transition:background .3s,transform .25s,box-shadow .3s;box-shadow:0 10px 26px rgba(29,168,81,.28)}
+    .btn-wa:hover{background:#158a41;transform:translateY(-3px);box-shadow:0 16px 32px rgba(29,168,81,.36)}
+    .btn-wa svg{width:19px;height:19px;fill:currentColor;flex:0 0 19px}
+    .modal-success{display:none;padding:48px 38px 40px;text-align:center}
+    .modal-success.show{display:block;animation:heroRise .6s cubic-bezier(.22,.8,.22,1)}
+    .success-badge{width:66px;height:66px;margin:0 auto 20px;border-radius:50%;background:rgba(29,168,81,.12);border:1px solid var(--wa);display:grid;place-items:center;color:var(--wa);font-size:30px}
+    .modal-success h4{font:500 30px/1.15 var(--serif);margin-bottom:12px}
+    .modal-success p{font-size:11px;line-height:1.8;color:#7b7c74;max-width:380px;margin:0 auto 22px}
+    .success-actions{display:flex;gap:14px;justify-content:center;flex-wrap:wrap}
+    .btn-ghost{border:1px solid #b9b3a5;background:transparent;color:var(--ink);padding:14px 18px;font-size:10px;font-weight:600;letter-spacing:.04em;cursor:pointer;transition:all .3s;font-family:var(--sans)}
+    .btn-ghost:hover{background:var(--ink);color:#fff;border-color:var(--ink)}
+
     .reveal{opacity:0;transform:translateY(60px);transition:opacity .9s cubic-bezier(.25,.46,.45,.94),transform .9s cubic-bezier(.25,.46,.45,.94)}
     .reveal.revealed{opacity:1;transform:translateY(0)}
     .reveal-delay-1{transition-delay:.15s}
@@ -157,7 +231,8 @@
       .intro-image img{height:260px}
       .visit{gap:5%}
       .map-wrap{height:440px}
-      .hero-content{left:8%}
+      .hero-content{left:8%;right:6%;bottom:98px}
+      .footer-contact{grid-template-columns:1fr 1fr;gap:22px}
     }
     @media(max-width:650px){
       .announcement{font-size:8px;height:32px}
@@ -171,12 +246,13 @@
       .nav-cta{text-align:center}
       .hero{min-height:670px;height:100vh}
       .hero-image{background-position:60% center}
-      .hero-shade{background:linear-gradient(90deg,rgba(14,20,16,.75),rgba(17,21,17,.23)),linear-gradient(0deg,rgba(12,16,13,.4),transparent 40%)}
-      .hero-content{left:7%;right:7%;top:48%;max-width:100%}
-      .hero h1{font-size:58px}
-      .hero-copy{font-size:13px;max-width:320px}
-      .hero-actions{align-items:flex-start;flex-direction:column;gap:18px}
-      .hero-stamp{right:7%;top:9%;width:83px;height:83px;font-size:6px}
+      .hero-shade{background:linear-gradient(90deg,rgba(14,20,16,.75),rgba(17,21,17,.23)),linear-gradient(0deg,rgba(12,16,13,.66),rgba(12,16,13,.2) 45%,transparent 65%)}
+      .hero-content{left:7%;right:7%;bottom:112px;max-width:none}
+      .hero h1{font-size:54px}
+      .hero-copy{font-size:13px;max-width:320px;margin:20px 0 24px}
+      .hero-actions{align-items:flex-start;flex-direction:column;gap:20px}
+      .btn-reserva{width:100%;padding:18px 20px}
+      .hero-stamp{right:7%;top:8%;width:83px;height:83px;font-size:6px}
       .hero-stamp b{font-size:13px}
       .hero-bottom{left:7%;right:7%;font-size:7px}
       .hero-bottom span:nth-child(2){max-width:185px;text-align:center}
@@ -206,14 +282,25 @@
       .footer-top{flex-wrap:wrap;gap:20px}
       .footer-top>p{order:3;width:100%;margin:0}
       .footer-book{font-size:9px}
+      .footer-contact{grid-template-columns:1fr;gap:20px;margin-top:26px;padding-top:24px}
       .footer-bottom{flex-direction:column;align-items:flex-start;gap:13px}
       .footer-bottom div{flex-wrap:wrap;line-height:1.6}
       .footer-bottom>a:last-child{display:none}
+      .modal-overlay{padding:0;align-items:flex-end}
+      .modal-card{max-height:94vh;border-top-width:3px}
+      .modal-head{padding:26px 22px 16px}
+      .modal-form{padding:6px 22px 28px}
+      .fields-grid{grid-template-columns:1fr;gap:12px}
+      .modal-success{padding:40px 22px 34px}
+      .modal-success h4{font-size:26px}
+      .success-actions{flex-direction:column}
+      .success-actions .btn-ghost,.success-actions .btn-wa{width:100%}
     }
     @media(prefers-reduced-motion:reduce){
       html{scroll-behavior:auto}
       *,*:before,*:after{transition:none!important;animation:none!important}
       .reveal,.reveal-left,.reveal-right,.reveal-scale{opacity:1;transform:none}
+      .hero-content>*,.hero-bottom{opacity:1}
     }
   </style>
 </head>
@@ -224,20 +311,20 @@
     <button class="menu-toggle" id="menuToggle" aria-label="Abrir menú" aria-expanded="false"><span></span><span></span></button>
     <nav class="main-nav" id="mainNav" aria-label="Navegación principal">
       <a href="#nosotros">Nuestra casa</a><a href="#sabores">Sabores</a><a href="#experiencia">La experiencia</a><a href="#visitanos">Encontranos</a>
-      <a class="nav-cta" href="https://wa.me/543834068161?text=Hola%2C%20quiero%20reservar%20una%20mesa%20en%20Cabildo" target="_blank" rel="noopener">Reservar mesa <span>↗</span></a>
+      <button class="nav-cta" type="button" data-open-reserva>Reservar mesa <span>↗</span></button>
     </nav>
   </header>
   <main>
     <section class="hero" id="inicio">
       <div class="hero-image" id="heroImage" role="img" aria-label="Mostrador de Cabildo Catamarca"></div>
       <div class="hero-shade"></div>
-      <div class="hero-content">
+      <div class="hero-content" id="heroContent">
         <p class="eyebrow"><span></span> COCINA ARGENTINA · CATAMARCA</p>
         <h1>El sabor de<br>sentirse <em>en casa.</em></h1>
         <p class="hero-copy">Una mesa para compartir, platos con historia y ese gusto argentino que siempre invita a volver.</p>
         <p class="hero-meta">516 opiniones <span>·</span> $ 10.000–20.000 por persona</p>
         <div class="hero-actions">
-          <a class="button button-light" href="https://wa.me/543834068161?text=Hola%2C%20quiero%20reservar%20una%20mesa%20en%20Cabildo" target="_blank" rel="noopener">Reservá tu mesa <span>↗</span></a>
+          <button class="button button-light btn-reserva" type="button" data-open-reserva><b>Reservá tu mesa</b> <span class="arrow-float">↗</span></button>
           <a class="text-link" href="#sabores">Conocé nuestra propuesta <span>↓</span></a>
         </div>
       </div>
@@ -279,7 +366,7 @@
           <div class="food-overlay"><span>02 / PARA ACOMPAÑAR</span><h3>Fresco, rico<br>y de estación</h3></div>
         </article>
         <article class="food-card reveal reveal-delay-3">
-          <img src="https://images.unsplash.com/photo-1488477181946-6428a0291777?auto=format&fit=crop&w=1000&q=85" alt="" loading="lazy">
+          <img src="https://images.unsplash.com/photo-1488477181946-6428a0291777?auto=format&fit=crop&w=1000&q=85" alt="Postre clásico para cerrar la cena" loading="lazy">
           <div class="food-overlay"><span>03 / EL FINAL FELIZ</span><h3>Un gusto<br>que se queda</h3></div>
         </article>
       </div>
@@ -290,7 +377,7 @@
       <div class="quote-photo reveal-left"></div>
       <div class="quote-content reveal-right">
         <p class="eyebrow"><span></span> MÁS QUE UNA COMIDA</p>
-        <div class="quote-mark">"</div>
+        <div class="quote-mark">“</div>
         <blockquote>Los mejores momentos<br>siempre encuentran<br>su lugar en la mesa.</blockquote>
         <span class="quote-rule"></span>
         <p class="quote-byline">CABILDO · CATAMARCA</p>
@@ -310,7 +397,7 @@
           <div><span class="contact-icon">◎</span><span><small>SEGUINOS</small><a href="https://www.instagram.com/cabildo.catamarca/" target="_blank" rel="noopener">@cabildo.catamarca</a></span></div>
         </div>
         <div class="visit-actions">
-          <a class="button button-dark" href="https://wa.me/543834068161?text=Hola%2C%20quiero%20reservar%20una%20mesa%20en%20Cabildo" target="_blank" rel="noopener">Reservar por WhatsApp <span>↗</span></a>
+          <button class="button button-dark" type="button" data-open-reserva>Reservar por WhatsApp <span>↗</span></button>
           <a class="under-link" href="https://maps.app.goo.gl/ymSK2oJGgU9GKvXA9" target="_blank" rel="noopener">Cómo llegar <span>↗</span></a>
         </div>
       </div>
@@ -329,8 +416,48 @@
     <div class="footer-top">
       <a class="brand brand-footer" href="#inicio"><span class="brand-mark">C</span><span><b>CABILDO</b><small>CATAMARCA</small></span></a>
       <p>Buena mesa. Grandes encuentros.</p>
-      <a class="footer-book" href="https://wa.me/543834068161?text=Hola%2C%20quiero%20reservar%20una%20mesa%20en%20Cabildo" target="_blank" rel="noopener">Reservar mesa ↗</a>
+      <button class="footer-book" type="button" data-open-reserva>Reservar mesa ↗</button>
     </div>
+
+    <div class="footer-contact">
+      <div class="fc-item">
+        <span class="fc-icon">⌖</span>
+        <span>
+          <small>DIRECCIÓN</small>
+          <b>Sarmiento 683</b>
+          <em>San Fernando del Valle de Catamarca<br>Catamarca · Argentina</em>
+          <a class="fc-tag" href="https://maps.app.goo.gl/ymSK2oJGgU9GKvXA9" target="_blank" rel="noopener">VER MAPA ↗</a>
+        </span>
+      </div>
+      <div class="fc-item">
+        <span class="fc-icon">☎</span>
+        <span>
+          <small>TELÉFONO Y WHATSAPP</small>
+          <b><a href="tel:+543834068161">0383 406-8161</a></b>
+          <em><a href="https://wa.me/543834068161?text=Hola%20Cabildo%2C%20quiero%20hacer%20una%20consulta" target="_blank" rel="noopener">+54 383 406-8161 (WhatsApp)</a></em>
+          <span class="fc-tag">RESERVAS Y CONSULTAS</span>
+        </span>
+      </div>
+      <div class="fc-item">
+        <span class="fc-icon">◷</span>
+        <span>
+          <small>HORARIOS</small>
+          <b>Todos los días</b>
+          <em>Almuerzos y cenas<br>Cierre: 1:00 hs</em>
+          <span class="fc-tag">$ 10.000 – 20.000 POR PERSONA</span>
+        </span>
+      </div>
+      <div class="fc-item">
+        <span class="fc-icon">◎</span>
+        <span>
+          <small>REDES</small>
+          <b><a href="https://www.instagram.com/cabildo.catamarca/" target="_blank" rel="noopener">@cabildo.catamarca</a></b>
+          <em>Instagram · Novedades, platos del día y eventos</em>
+          <button class="fc-tag" type="button" data-open-reserva style="cursor:pointer">RESERVÁ TU MESA ↗</button>
+        </span>
+      </div>
+    </div>
+
     <div class="footer-line"></div>
     <div class="footer-bottom">
       <span>© 2026 Cabildo Catamarca</span>
@@ -343,20 +470,97 @@
     </div>
   </footer>
 
+  <!-- ===== MODAL: FORMULARIO DE RESERVA → WHATSAPP ===== -->
+  <div class="modal-overlay" id="reservaModal" role="dialog" aria-modal="true" aria-labelledby="reservaTitle" aria-hidden="true">
+    <div class="modal-card" role="document">
+      <div class="modal-head">
+        <div>
+          <p class="eyebrow dark">— RESERVAS · CABILDO CATAMARCA</p>
+          <h3 id="reservaTitle">Reservá tu <em>mesa.</em></h3>
+          <p>Completá tus datos y envialos por WhatsApp. Te confirmamos la reserva enseguida.</p>
+        </div>
+        <button class="modal-close" type="button" id="reservaClose" aria-label="Cerrar formulario">×</button>
+      </div>
+
+      <form class="modal-form" id="reservaForm" novalidate>
+        <div class="fields-grid">
+          <div class="field full">
+            <label for="rNombre">NOMBRE Y APELLIDO</label>
+            <input type="text" id="rNombre" name="nombre" placeholder="Ej: María González" autocomplete="name">
+            <span class="err" data-err-for="rNombre"></span>
+          </div>
+          <div class="field">
+            <label for="rAsistentes">NÚMERO DE ASISTENTES</label>
+            <select id="rAsistentes" name="asistentes">
+              <option value="">Seleccioná…</option>
+              <option value="1 persona">1 persona</option>
+              <option value="2 personas">2 personas</option>
+              <option value="3 personas">3 personas</option>
+              <option value="4 personas">4 personas</option>
+              <option value="5 personas">5 personas</option>
+              <option value="6 personas">6 personas</option>
+              <option value="7 personas">7 personas</option>
+              <option value="8 personas">8 personas</option>
+              <option value="9 personas">9 personas</option>
+              <option value="10 personas">10 personas</option>
+              <option value="Más de 10 personas (grupo)">Más de 10 (grupo)</option>
+            </select>
+            <span class="err" data-err-for="rAsistentes"></span>
+          </div>
+          <div class="field">
+            <label for="rFecha">FECHA</label>
+            <input type="date" id="rFecha" name="fecha">
+            <span class="err" data-err-for="rFecha"></span>
+          </div>
+          <div class="field">
+            <label for="rHora">HORA</label>
+            <input type="time" id="rHora" name="hora" step="900">
+            <span class="err" data-err-for="rHora"></span>
+          </div>
+          <div class="field">
+            <label for="rEmail">E-MAIL <i>(opcional)</i></label>
+            <input type="email" id="rEmail" name="email" placeholder="tucorreo@ejemplo.com" autocomplete="email">
+            <span class="err" data-err-for="rEmail"></span>
+          </div>
+        </div>
+
+        <p class="modal-note">Reservas sujetas a disponibilidad. Para grupos grandes o eventos, contanos por WhatsApp y lo organizamos juntos. Sarmiento 683 · Catamarca.</p>
+
+        <button class="btn-wa" type="submit">
+          <svg viewBox="0 0 32 32" aria-hidden="true"><path d="M16.004 3C9.383 3 4 8.383 4 15c0 2.65.86 5.1 2.32 7.1L4 29l7.1-2.32A11.94 11.94 0 0 0 16.004 27C22.625 27 28 21.617 28 15S22.625 3 16.004 3zm0 22a9.9 9.9 0 0 1-5.06-1.39l-.36-.21-3.75 1.23 1.24-3.65-.24-.37A9.94 9.94 0 1 1 16.004 25zm5.47-7.42c-.3-.15-1.77-.87-2.04-.97-.27-.1-.47-.15-.67.15s-.77.97-.94 1.17c-.17.2-.35.22-.65.07-.3-.15-1.26-.46-2.4-1.48-.89-.79-1.49-1.77-1.66-2.07-.17-.3-.02-.46.13-.61.13-.13.3-.35.45-.52.15-.17.2-.3.3-.5.1-.2.05-.37-.02-.52-.07-.15-.67-1.62-.92-2.22-.24-.58-.49-.5-.67-.51h-.57c-.2 0-.52.07-.79.37-.27.3-1.04 1.02-1.04 2.49s1.07 2.89 1.22 3.09c.15.2 2.1 3.2 5.08 4.49.71.31 1.26.49 1.69.63.71.23 1.36.2 1.87.12.57-.08 1.77-.72 2.02-1.42.25-.7.25-1.3.17-1.42-.07-.12-.27-.2-.57-.35z"/></svg>
+          Enviar reserva por WhatsApp
+        </button>
+      </form>
+
+      <div class="modal-success" id="reservaSuccess">
+        <div class="success-badge">✓</div>
+        <h4>¡Reserva lista para enviarse!</h4>
+        <p id="successText">Abrimos WhatsApp con tus datos cargados. Solo tenés que tocar <b>Enviar</b> y te confirmamos la mesa.</p>
+        <div class="success-actions">
+          <a class="btn-wa" id="successLink" href="#" target="_blank" rel="noopener" style="text-decoration:none">Abrir WhatsApp otra vez</a>
+          <button class="btn-ghost" type="button" id="successClose">Cerrar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <script>
     (function(){
       const cabildoToggle = document.getElementById('menuToggle');
       const cabildoNav = document.getElementById('mainNav');
       const cabildoHeader = document.getElementById('siteHeader');
       const cabildoHeroImg = document.getElementById('heroImage');
+      const cabildoHeroContent = document.getElementById('heroContent');
+      const cabildoStamp = document.querySelector('.hero-stamp');
+      const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
+      /* ===== Menú mobile ===== */
       cabildoToggle?.addEventListener('click', function(){
         const isOpen = cabildoNav.classList.toggle('open');
         cabildoToggle.classList.toggle('active', isOpen);
         cabildoToggle.setAttribute('aria-expanded', String(isOpen));
         cabildoToggle.setAttribute('aria-label', isOpen ? 'Cerrar menú' : 'Abrir menú');
       });
-
       cabildoNav?.querySelectorAll('a').forEach(function(cabildoLink){
         cabildoLink.addEventListener('click', function(){
           cabildoNav.classList.remove('open');
@@ -365,26 +569,65 @@
         });
       });
 
+      /* ===== Hero: parallax de imagen + movimiento del texto/botones ===== */
+      let heroMouseX = 0, heroMouseY = 0, heroTargetX = 0, heroTargetY = 0, heroScrollY = 0, heroTicking = false;
+
+      function cabildoRenderHero(){
+        const vh = window.innerHeight;
+        if(cabildoHeroImg){
+          cabildoHeroImg.style.transform = 'scale(1.06) translate3d(' + (heroMouseX * -16).toFixed(2) + 'px,' + (heroScrollY * 0.32 + heroMouseY * -12).toFixed(2) + 'px,0)';
+        }
+        if(cabildoHeroContent){
+          const drift = heroScrollY * 0.16;
+          const fade = Math.max(0, 1 - heroScrollY / (vh * 0.62));
+          cabildoHeroContent.style.transform = 'translate3d(' + (heroMouseX * 9).toFixed(2) + 'px,' + (drift + heroMouseY * 7).toFixed(2) + 'px,0)';
+          cabildoHeroContent.style.opacity = fade.toFixed(3);
+        }
+        if(cabildoStamp){
+          cabildoStamp.style.marginTop = (heroScrollY * -0.08 + heroMouseY * 8).toFixed(2) + 'px';
+          cabildoStamp.style.marginRight = (heroMouseX * -10).toFixed(2) + 'px';
+        }
+      }
+
+      function cabildoHeroLoop(){
+        heroMouseX += (heroTargetX - heroMouseX) * 0.07;
+        heroMouseY += (heroTargetY - heroMouseY) * 0.07;
+        cabildoRenderHero();
+        if(Math.abs(heroTargetX - heroMouseX) > 0.001 || Math.abs(heroTargetY - heroMouseY) > 0.001){
+          requestAnimationFrame(cabildoHeroLoop);
+        } else {
+          heroTicking = false;
+        }
+      }
+
+      function cabildoStartHeroLoop(){
+        if(!heroTicking){ heroTicking = true; requestAnimationFrame(cabildoHeroLoop); }
+      }
+
+      if(!reduceMotion){
+        window.addEventListener('mousemove', function(ev){
+          if(window.innerWidth < 900) return;
+          heroTargetX = (ev.clientX / window.innerWidth - 0.5) * 2;
+          heroTargetY = (ev.clientY / window.innerHeight - 0.5) * 2;
+          cabildoStartHeroLoop();
+        }, {passive:true});
+      }
+
+      /* ===== Scroll: header + hero ===== */
       let cabildoScrollTick = false;
       window.addEventListener('scroll', function(){
         if(!cabildoScrollTick){
           requestAnimationFrame(function(){
-            const cabildoScrollPos = window.scrollY;
-
-            if(cabildoHeader){
-              cabildoHeader.classList.toggle('scrolled', cabildoScrollPos > 60);
-            }
-
-            if(cabildoHeroImg && cabildoScrollPos < window.innerHeight){
-              cabildoHeroImg.style.transform = 'scale(1.02) translateY(' + (cabildoScrollPos * 0.35) + 'px)';
-            }
-
+            heroScrollY = window.scrollY;
+            if(cabildoHeader){ cabildoHeader.classList.toggle('scrolled', heroScrollY > 60); }
+            if(!reduceMotion){ cabildoRenderHero(); }
             cabildoScrollTick = false;
           });
           cabildoScrollTick = true;
         }
       }, {passive: true});
 
+      /* ===== Reveal on scroll ===== */
       const cabildoRevealEls = document.querySelectorAll('.reveal, .reveal-left, .reveal-right, .reveal-scale');
       if(cabildoRevealEls.length > 0){
         const cabildoObserver = new IntersectionObserver(function(cabildoEntries){
@@ -394,16 +637,11 @@
               cabildoObserver.unobserve(cabildoEntry.target);
             }
           });
-        }, {
-          threshold: 0.12,
-          rootMargin: '0px 0px -60px 0px'
-        });
-
-        cabildoRevealEls.forEach(function(cabildoEl){
-          cabildoObserver.observe(cabildoEl);
-        });
+        }, {threshold: 0.12, rootMargin: '0px 0px -60px 0px'});
+        cabildoRevealEls.forEach(function(cabildoEl){ cabildoObserver.observe(cabildoEl); });
       }
 
+      /* ===== Smooth anchors ===== */
       document.querySelectorAll('a[href^="#"]').forEach(function(cabildoAnchor){
         cabildoAnchor.addEventListener('click', function(cabildoEvent){
           const cabildoTargetId = this.getAttribute('href');
@@ -413,10 +651,184 @@
             cabildoEvent.preventDefault();
             const cabildoHeaderH = cabildoHeader ? cabildoHeader.offsetHeight : 0;
             const cabildoTargetPos = cabildoTarget.getBoundingClientRect().top + window.scrollY - cabildoHeaderH;
-            window.scrollTo({top: cabildoTargetPos, behavior: 'smooth'});
+            window.scrollTo({top: cabildoTargetPos, behavior: reduceMotion ? 'auto' : 'smooth'});
           }
         });
       });
+
+      /* ===== MODAL DE RESERVA → WHATSAPP ===== */
+      const WA_NUMBER = '543834068161';
+      const reservaModal = document.getElementById('reservaModal');
+      const reservaCard = reservaModal ? reservaModal.querySelector('.modal-card') : null;
+      const reservaForm = document.getElementById('reservaForm');
+      const reservaSuccess = document.getElementById('reservaSuccess');
+      const successLink = document.getElementById('successLink');
+      const fNombre = document.getElementById('rNombre');
+      const fAsistentes = document.getElementById('rAsistentes');
+      const fFecha = document.getElementById('rFecha');
+      const fHora = document.getElementById('rHora');
+      const fEmail = document.getElementById('rEmail');
+      let lastFocused = null;
+
+      function cabildoTodayStr(){
+        const d = new Date();
+        const m = String(d.getMonth() + 1).padStart(2, '0');
+        const day = String(d.getDate()).padStart(2, '0');
+        return d.getFullYear() + '-' + m + '-' + day;
+      }
+      if(fFecha){ fFecha.min = cabildoTodayStr(); }
+
+      function cabildoSetError(input, message){
+        const field = input ? input.closest('.field') : null;
+        const errEl = input ? document.querySelector('[data-err-for="' + input.id + '"]') : null;
+        if(field){ field.classList.toggle('invalid', !!message); }
+        if(errEl){ errEl.textContent = message || ''; }
+        if(input){ input.setAttribute('aria-invalid', message ? 'true' : 'false'); }
+      }
+
+      function cabildoFormatFecha(valor){
+        if(!valor) return '';
+        const partes = valor.split('-');
+        if(partes.length !== 3) return valor;
+        const fecha = new Date(Number(partes[0]), Number(partes[1]) - 1, Number(partes[2]));
+        let dia = '';
+        try{
+          dia = new Intl.DateTimeFormat('es-AR', {weekday:'long'}).format(fecha) + ' ';
+        }catch(e){ dia = ''; }
+        return dia + partes[2] + '/' + partes[1] + '/' + partes[0];
+      }
+
+      function cabildoOpenReserva(){
+        if(!reservaModal) return;
+        lastFocused = document.activeElement;
+        reservaModal.classList.add('open');
+        reservaModal.setAttribute('aria-hidden', 'false');
+        document.body.classList.add('locked');
+        if(reservaForm){ reservaForm.style.display = ''; }
+        if(reservaSuccess){ reservaSuccess.classList.remove('show'); }
+        setTimeout(function(){ if(fNombre){ fNombre.focus(); } }, 320);
+      }
+
+      function cabildoCloseReserva(){
+        if(!reservaModal) return;
+        reservaModal.classList.remove('open');
+        reservaModal.setAttribute('aria-hidden', 'true');
+        document.body.classList.remove('locked');
+        if(lastFocused && typeof lastFocused.focus === 'function'){ lastFocused.focus(); }
+      }
+
+      document.querySelectorAll('[data-open-reserva]').forEach(function(boton){
+        boton.addEventListener('click', function(ev){
+          ev.preventDefault();
+          cabildoNav?.classList.remove('open');
+          cabildoToggle?.classList.remove('active');
+          cabildoToggle?.setAttribute('aria-expanded', 'false');
+          cabildoOpenReserva();
+        });
+      });
+
+      document.getElementById('reservaClose')?.addEventListener('click', cabildoCloseReserva);
+      document.getElementById('successClose')?.addEventListener('click', cabildoCloseReserva);
+
+      reservaModal?.addEventListener('click', function(ev){
+        if(ev.target === reservaModal){ cabildoCloseReserva(); }
+      });
+
+      document.addEventListener('keydown', function(ev){
+        if(!reservaModal || !reservaModal.classList.contains('open')) return;
+        if(ev.key === 'Escape'){ cabildoCloseReserva(); return; }
+        if(ev.key === 'Tab' && reservaCard){
+          const focusables = reservaCard.querySelectorAll('button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])');
+          const visibles = Array.prototype.filter.call(focusables, function(el){ return el.offsetParent !== null && !el.disabled; });
+          if(visibles.length === 0) return;
+          const primero = visibles[0];
+          const ultimo = visibles[visibles.length - 1];
+          if(ev.shiftKey && document.activeElement === primero){ ev.preventDefault(); ultimo.focus(); }
+          else if(!ev.shiftKey && document.activeElement === ultimo){ ev.preventDefault(); primero.focus(); }
+        }
+      });
+
+      [fNombre, fAsistentes, fFecha, fHora, fEmail].forEach(function(campo){
+        campo?.addEventListener('input', function(){ cabildoSetError(campo, ''); });
+        campo?.addEventListener('change', function(){ cabildoSetError(campo, ''); });
+      });
+
+      reservaForm?.addEventListener('submit', function(ev){
+        ev.preventDefault();
+        let valido = true;
+        let primerInvalido = null;
+
+        const nombre = (fNombre?.value || '').trim();
+        if(nombre.length < 3 || !/\s/.test(nombre)){
+          cabildoSetError(fNombre, 'Escribí tu nombre y apellido.');
+          valido = false; primerInvalido = primerInvalido || fNombre;
+        } else { cabildoSetError(fNombre, ''); }
+
+        const asistentes = fAsistentes?.value || '';
+        if(!asistentes){
+          cabildoSetError(fAsistentes, 'Indicá cuántos vienen.');
+          valido = false; primerInvalido = primerInvalido || fAsistentes;
+        } else { cabildoSetError(fAsistentes, ''); }
+
+        const fecha = fFecha?.value || '';
+        if(!fecha){
+          cabildoSetError(fFecha, 'Elegí una fecha.');
+          valido = false; primerInvalido = primerInvalido || fFecha;
+        } else if(fecha < cabildoTodayStr()){
+          cabildoSetError(fFecha, 'La fecha no puede ser anterior a hoy.');
+          valido = false; primerInvalido = primerInvalido || fFecha;
+        } else { cabildoSetError(fFecha, ''); }
+
+        const hora = fHora?.value || '';
+        if(!hora){
+          cabildoSetError(fHora, 'Elegí un horario.');
+          valido = false; primerInvalido = primerInvalido || fHora;
+        } else { cabildoSetError(fHora, ''); }
+
+        const email = (fEmail?.value || '').trim();
+        if(email && !/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email)){
+          cabildoSetError(fEmail, 'Revisá el formato del e-mail.');
+          valido = false; primerInvalido = primerInvalido || fEmail;
+        } else { cabildoSetError(fEmail, ''); }
+
+        if(!valido){
+          if(primerInvalido){ primerInvalido.focus(); }
+          if(reservaCard){
+            reservaCard.animate(
+              [{transform:'translateX(0)'},{transform:'translateX(-7px)'},{transform:'translateX(7px)'},{transform:'translateX(0)'}],
+              {duration:280, easing:'ease-in-out'}
+            );
+          }
+          return;
+        }
+
+        const mensaje =
+          'Hola Cabildo Catamarca! Quiero reservar una mesa.\n\n' +
+          '• Nombre y apellido: ' + nombre + '\n' +
+          '• Asistentes: ' + asistentes + '\n' +
+          '• Fecha: ' + cabildoFormatFecha(fecha) + '\n' +
+          '• Hora: ' + hora + ' hs\n' +
+          '• E-mail: ' + (email ? email : 'No informado (opcional)') + '\n\n' +
+          'Enviado desde la web de Cabildo Catamarca.';
+
+        const waUrl = 'https://wa.me/' + WA_NUMBER + '?text=' + encodeURIComponent(mensaje);
+
+        if(successLink){ successLink.href = waUrl; }
+        if(reservaForm){ reservaForm.style.display = 'none'; }
+        if(reservaSuccess){ reservaSuccess.classList.add('show'); }
+
+        const nuevaVentana = window.open(waUrl, '_blank', 'noopener');
+        if(!nuevaVentana && successLink){ successLink.focus(); }
+      });
+
+      /* ===== Fallback visual si no existe mostradorcabildo.jpg ===== */
+      if(cabildoHeroImg){
+        const prueba = new Image();
+        prueba.onerror = function(){
+          cabildoHeroImg.style.backgroundImage = "url('https://images.unsplash.com/photo-1558030006-450675393462?auto=format&fit=crop&w=2200&q=90')";
+        };
+        prueba.src = 'mostradorcabildo.jpg';
+      }
     })();
   </script>
 </body>
